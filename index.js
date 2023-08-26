@@ -19,15 +19,12 @@ mongoose.connect('mongodb+srv://jj:abcd1234@cluster0.35srof1.mongodb.net/?retryW
 app.get('/', (req, res) => res.send('Hello World!'))
 
 app.post('/register', (req, res) => {
-
-  const user = new User(req.body)
-  user.save((err, userInfo) => {
-    if(err) return res.json({ success: false, err})
-    return res.status(200).json({
+  const user = new User(req.body);
+  user.save().then(() => {
+    res.status(200).json({
       success: true
-  })
-  })
-
+    })
+  }).catch((err) => {return res.json({ success: false, err})})
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
